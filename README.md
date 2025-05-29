@@ -8,7 +8,7 @@ The goal is to run a small script in the terminal to be able to install all the 
 - Make it executable: `chmod +x ubuntu.sh`
 - Run it: `./ubuntu.sh`
 
-## List of existing script
+## List of existing scripts
 
 - [ubuntu.sh](https://github.com/t1gu1/os-starter-scripts/blob/main/ubuntu.sh)
 - Arch base : TODO
