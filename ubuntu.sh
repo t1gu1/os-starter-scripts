@@ -14,7 +14,7 @@ echo "Starting Ubuntu system setup..."
 echo "Updating system and installing core packages..."
 sudo apt update
 sudo apt upgrade -y # -y flag to automatically answer yes to prompts
-sudo apt install -y curl git build-essential wl-clipboard ripgrep fd-find luarocks fzf imagemagick
+sudo apt install -y curl git build-essential wl-clipboard ripgrep fd-find luarocks fzf imagemagick gnome-shell-extension-manager gnome-tweaks
 
 # --- LazyGit Installation ---
 echo "Installing LazyGit..."
