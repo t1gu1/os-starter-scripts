@@ -65,7 +65,41 @@ sudo snap install obs-studio --candidate
 sudo snap install steam --edge
 sudo snap install defold
 
-# TODO: Should check how I install GoXLR .deb on that link: https://github.com/GoXLR-on-Linux/goxlr-utility/releases/download/v1.2.2/goxlr-utility_1.2.2-1_amd64.deb
+# --- Docker and Docker Compose Installation ---
+echo "Installing Docker and Docker Compose..."
+
+# Add Docker's official GPG key
+sudo apt update
+sudo apt install -y ca-certificates curl gnupg
+sudo install -m 0755 -d /etc/apt/keyrings
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+sudo chmod a+r /etc/apt/keyrings/docker.gpg
+
+# Add the Docker repository to Apt sources
+echo \
+  "deb [arch=\"$(dpkg --print-architecture)\" signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu \
+  \"$(. /etc/os-release && echo "$VERSION_CODENAME")\" stable" | \
+  sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+
+sudo apt update
+
+# Install Docker packages
+sudo apt install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin
+
+# Add current user to the 'docker' group to run Docker without sudo
+if ! getent group docker | grep &>/dev/null "\b$(id -un)\b"; then
+    sudo usermod -aG docker "$USER"
+    echo "User '$USER' added to the 'docker' group. You will need to log out and log back in for this to take effect."
+else
+    echo "User '$USER' is already a member of the 'docker' group."
+fi
+
+# Install Docker Compose (standalone plugin)
+# Get the latest Docker Compose version
+DOCKER_COMPOSE_VERSION=$(curl -s https://api.github.com/repos/docker/compose/releases/latest | grep tag_name | cut -d : -f 2 | tr -d \"\, | awk '{$1=$1};1')
+echo "Installing Docker Compose version: ${DOCKER_COMPOSE_VERSION}..."
+sudo curl -L "https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/lib/docker/cli-plugins/docker-compose
+sudo chmod +x /usr/local/lib/docker/cli-plugins/docker-compose
 
 # --- TODOs (Manual Steps/Further Investigation) ---
 echo "--- Important TODOs ---"
